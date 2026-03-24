@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Memberikan efek 'tebal' pada card seperti referensi */
+  .card-custom {
+    @apply bg-slate-900 border-2 border-slate-800 rounded-3xl shadow-[0_8px_0_0_rgba(0,0,0,0.25)];
+  }
+
+  /* Styling Input agar lebih modern */
+  .input-custom {
+    @apply bg-slate-950 border-2 border-slate-800 rounded-2xl p-4 text-white 
+           focus:border-indigo-500 focus:outline-none transition-all duration-200;
+  }
+
+  /* Efek tombol Duolingo (Bouncy Button) */
+  .btn-bouncy {
+    @apply border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all;
+  }
+}

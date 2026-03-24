@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-slate-950"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Money Tracker</title>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 antialiased text-slate-200 bg-slate-950">
+    <div class="w-full max-w-sm flex flex-col gap-4">
+        <!-- Tampilan Uang Pemasukan dan Pengeluaran -->
+
+        
+        <!-- Tab -->
+        <div role="tablist" class="tabs tabs-border gap-x-8">
+            <a role="tab" class="tab text-slate-400 hover:text-white font-bold transition-all" id="tabKembali">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Kembali
+            </a>
+             <a role="tab" class="tab text-slate-400 hover:text-white font-bold transition-all" id="tabStatistik">
+                Statistik
+            </a>
+        </div>
+
+        <!-- Form Catatan Transaksi -->
+        <div class="card bg-slate-900 w-full shrink-0 border-2 border-slate-800 border-b-8 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="card-body p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-white mb-6 text-center tracking-tight">Tambah Catatan</h2>
+                
+                <!-- Input nonimal -->
+                <form id="formTransaksi" class="space-y-4">
+                    <fieldset class="fieldset space-y-4">
+                        <div class="form-control">
+                            <label class="label text-slate-500 font-bold uppercase text-[10px] tracking-widest">Input Nominal</label>
+                            <input 
+                                id="inputNominal" 
+                                type="text" 
+                                class="input input-bordered bg-slate-950 border-2 border-slate-800 focus:border-indigo-500 transition-all rounded-xl text-lg font-semibold h-12" 
+                                inputmode="numeric"
+                                placeholder="Rp 0"/>
+                        </div>
+                        
+                        <!-- Radio button Pemasukan dan Pengeluaran -->
+                        <div class="form-control">
+                            <label class="label text-slate-500 font-bold uppercase text-[10px] tracking-widest">Tipe Transaksi</label>
+                            <div class="flex gap-2 bg-slate-950 p-2 rounded-2xl border-2 border-slate-800">
+                                
+                                <label class="flex items-center gap-2 cursor-pointer p-2 flex-1 justify-center rounded-xl hover:bg-slate-900 transition has-[:checked]:bg-indigo-500/10">
+                                    <span class="label-text text-white text-xs">Pemasukan</span>
+                                    <input id="pemasukan" name="tipe" type="radio" class="radio radio-success radio-sm" checked="checked" />
+                                </label>
+
+                                <label class="flex items-center gap-2 cursor-pointer p-2 flex-1 justify-center rounded-xl hover:bg-slate-900 transition has-[:checked]:bg-indigo-500/10">
+                                    <span class="label-text text-white text-xs">Pengeluaran</span>
+                                    <input id="pengeluaran" name="tipe" type="radio" class="radio radio-warning radio-sm" /> 
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <!-- Tanggal Transaksi -->
+                        <div class="form-control">
+                            <label class="label text-slate-500 font-bold uppercase text-[10px] tracking-widest">Tanggal</label>
+                            <input 
+                                type="date"
+                                id="tanggalTransaksi"
+                                class="input input-bordered bg-slate-950 border-2 border-slate-800 focus:border-indigo-500 rounded-xl w-full h-12 text-sm"
+                                required
+                            />
+                        </div>
+                        
+                        <!-- Catatan Transaksi -->
+                        <div class="form-control">
+                            <label class="label text-slate-500 font-bold uppercase text-[10px] tracking-widest">Catatan</label>
+                            <textarea 
+                                id="catatanTransaksi"
+                                class="textarea textarea-bordered bg-slate-950 border-2 border-slate-800 focus:border-indigo-500 rounded-xl h-24 resize-none text-sm"
+                                placeholder="Makan siang bersama tim..."
+                            ></textarea>
+                        </div>
+                    </fieldset>
+
+                    <div class="mt-6">
+                        <button type="submit" class="btn btn-primary w-full rounded-2xl border-b-4 border-indigo-800 hover:border-b-0 hover:mt-1 active:scale-95 transition-all font-bold text-lg h-14 shadow-lg shadow-indigo-500/20">
+                            Simpan Transaksi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tampilan Daftar Transaksi -->
+        <div class="w-full max-w-sm mt-8">
+            <h3 class="text-white font-bold mb-4 px-2 uppercase text-xs tracking-widest text-slate-500">Riwayat Transaksi</h3>
+            <div id="listTransaksi" class="space-y-3">
+                <p class="text-slate-600 text-center text-sm italic">Belum ada transaksi.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="alertContainer" class="fixed top-5 left-1/2 -translate-x-1/2 z-[100] w-full max-w-sm px-4"></div>
+    <script type="module" src="/src/dashboard.js"></script>
+</body>
+</html>
