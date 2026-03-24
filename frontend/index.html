@@ -9,21 +9,42 @@
 </head>
 
 <body class="bg-slate-950 text-slate-50 antialiased selection:bg-blue-500/30">
-  <main class="min-h-screen flex flex-col items-center justify-center p-6 md:p-12">
+  <main class="min-h-screen flex items-center justify-center p-6 md:p-12 overflow-hidden">
     
-    <div class="text-center max-w-3xl">
-      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-        Kendalikan Finansialmu <span class="text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">Tanpa Ribet!</span>
-      </h1>
-      <p class="text-base md:text-lg italic text-slate-400 mb-10 max-w-xl mx-auto leading-relaxed">
-        Catat pengeluaran otomatis, analisis budget real-time, dan amankan masa depan finansialmu dengan standar enkripsi bank.
-      </p>
+    <div class="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12 md:gap-20">
       
-      <button id="btnDemo" class="btn btn-primary btn-lg px-10 rounded-2xl border-b-4 border-blue-700 hover:border-b-0 hover:translate-y-[2px] active:translate-y-[4px] transition-all duration-75 shadow-lg shadow-blue-500/20 mb-16 uppercase font-black tracking-wider">
-        Coba Demo Gratis!!
-      </button>
+      <div class="text-center md:text-left max-w-xl flex flex-col items-center md:items-start order-1 md:order-1 z-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+          Kendalikan Finansialmu <span class="text-blue-500 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">Tanpa Ribet!</span>
+        </h1>
+        <p class="text-base md:text-lg italic text-slate-400 mb-10 leading-relaxed mx-auto md:mx-0">
+          Catat pengeluaran otomatis, analisis budget real-time, dan amankan masa depan finansialmu dengan standar enkripsi bank.
+        </p>
+        
+        <button id="btnDemo" class="btn btn-primary btn-lg px-10 rounded-2xl border-b-4 border-blue-700 hover:border-b-0 hover:translate-y-[2px] active:translate-y-[4px] transition-all duration-75 shadow-lg shadow-blue-500/20 uppercase font-black tracking-wider">
+          Coba Demo Gratis!!
+        </button>
+      </div>
+
+      <div class="relative w-full max-w-xs md:max-w-md order-2 md:order-2 transition-transform duration-700 hover:rotate-0 flex justify-center">
+          <div class="absolute -top-10 -left-10 w-48 h-48 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"></div>
+          <!-- Illustration CSS Based -->
+          <div class="relative bg-slate-900/50 backdrop-blur-xl p-6 md:p-8 rounded-[32px] md:rounded-[40px] shadow-2xl border border-slate-800 rotate-3 transition-all hover:rotate-0 w-full">
+              <div class="flex flex-col gap-4">
+                  <div class="w-full h-24 md:h-32 bg-slate-800/50 rounded-2xl flex items-center justify-center text-5xl drop-shadow-lg">
+                    💰
+                  </div>
+                  <div class="space-y-3">
+                      <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+                         <div class="w-2/3 h-full bg-blue-500 animate-pulse"></div>
+                      </div>
+                      <div class="w-1/2 h-3 bg-slate-800 rounded-full"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
-  </main>
+</main>
 
   <script type="module" src="/src/main.js"></script>
 </body>

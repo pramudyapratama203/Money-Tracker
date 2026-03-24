@@ -34,7 +34,7 @@ formTransaksi.addEventListener('submit', (e) => {
 
   // Ambil data dari form
   const nominalValue = inputNominal.value;
-  const radioTerpilih = document.querySelector('input[name="tipe]:checked');
+  const radioTerpilih = document.querySelector('input[name="tipe"]:checked');
   const tipeSelected = radioTerpilih ? radioTerpilih.id : 'pengeluaran'; // Pemasukan atau pengeluaran
   const tanggalValue = tanggalTransaksi.value;
   const catatanValue = document.getElementById("catatanTransaksi").value;
@@ -46,6 +46,7 @@ formTransaksi.addEventListener('submit', (e) => {
   };
 
   const transaksiBaru = {
+    id : Date.now(), // ID Unik berdasarkan milidetik 
     nominal : nominalValue,
     tipe : tipeSelected,
     tanggal : tanggalValue,
@@ -53,14 +54,15 @@ formTransaksi.addEventListener('submit', (e) => {
   };
   
   dataTransaksi.unshift(transaksiBaru); // Masukkan ke urutan paling atas
-  
-  // Reset form
-  formTransaksi.reset();
-  tanggalTransaksi.valueAsDate = new Date(); 
 
   // Alert
   showAlert('Transaksi berhasil disimpan!', 'alert-success');
   tampilkanTransaksi();
+  hitungSaldo();
+
+  // Reset form
+  formTransaksi.reset();
+  tanggalTransaksi.valueAsDate = new Date(); 
 });
 
 // Menampilkan data ke UI
@@ -75,18 +77,37 @@ function tampilkanTransaksi() {
   dataTransaksi.forEach((item) => {
     const isPemasukan = item.tipe === 'pemasukan';
 
-    const cardHtml = `
-      <div class="bg-slate-900 border-2 border-slate-800 p-4 rounded-2xl flex justify-between items-center shadow-lg">
-        <div>
-          <p class="text-white font-bold">${item.nominal}</p>
-          <p class="text-slate-500 text-xs">${item.tanggal} • ${item.catatan || 'Tanpa catatan'}</p>
-        </div>
-        <span class="badge ${isPemasukan ? 'badge-success' : 'badge-warning'} badge-sm font-bold uppercase text-[10px]">
+  const cardHtml = `
+    <div class="bg-slate-900 group border-2 border-slate-800 p-4 rounded-3xl flex justify-between items-center shadow-lg mb-3 transition-all hover:border-indigo-500/50">
+      <div class="space-y-1">
+        <p class="text-white font-black text-lg tracking-tight">Rp ${item.nominal}</p>
+        
+        <p class="text-slate-500 text-[10px] flex items-center gap-1.5">
+          <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase">Tanggal</span> 
+          ${item.tanggal}
+        </p>
+        
+        <p class="text-slate-400 text-xs italic truncate max-w-[150px] md:max-w-xs">
+          ${item.catatan || 'Tanpa catatan'}
+        </p>
+      </div>
+
+      <div class="flex flex-col items-end gap-3">
+        <span class="badge ${isPemasukan ? 'badge-success' : 'badge-warning'} badge-xs font-black uppercase text-[9px] py-2.5 px-3 shadow-sm">
           ${item.tipe}
         </span>
-      </div>
-    `;
 
+        <div class="flex gap-4 md:gap-2 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300">
+          <button onclick="hapusTransaksi(${item.id})" class="text-error hover:text-red-400 text-[11px] font-bold uppercase tracking-wider transition-colors">
+            Hapus
+          </button>
+          <div class="w-[1px] h-3 bg-slate-800 md:hidden"></div> <button onclick="editTransaksi(${item.id})" class="text-info hover:text-blue-400 text-[11px] font-bold uppercase tracking-wider transition-colors">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
     listContainer.innerHTML += cardHtml;
   });
 }  
@@ -122,4 +143,75 @@ function showAlert(pesan, tipe = 'alert-info') {
             alertDiv.remove();
         }, 500);
     }, 3000);
+}
+
+// Menjumlahkan nominalnya berdasarkan tipe transaksi
+function hitungSaldo() {
+  let pemasukan = 0;
+  let pengeluaran = 0;
+
+  dataTransaksi.forEach(item => {
+    const angkaMurni = parseInt(item.nominal.replace(/\./g, '')) || 0 ;
+
+    if (item.tipe === 'pemasukan'){
+      pemasukan += angkaMurni;
+    } else {
+      pengeluaran += angkaMurni;
+    }
+  });
+
+  const totalSaldo = pemasukan - pengeluaran;
+  const formatTotal = new Intl.NumberFormat("id-ID");
+
+  document.getElementById("totalPemasukan").innerText = `Rp. ${formatTotal.format(pemasukan)}`;
+  document.getElementById("totalPengeluaran").innerText = `Rp. ${formatTotal.format(pengeluaran)}`;
+  document.getElementById("totalSaldo").innerText = `Rp. ${formatTotal.format(totalSaldo)}`;
+}
+
+// CRUD 
+// Hapus Transaksi 
+let idYangAkanDihapus = null;
+window.hapusTransaksi = function(id) {
+  idYangAkanDihapus = id;
+  const modal = document.getElementById("modalHapus");
+  modal.showModal();
+};
+
+document.getElementById('btnConfirmHapus').addEventListener('click', () => {
+  if(idYangAkanDihapus) {
+    dataTransaksi = dataTransaksi.filter(item => item.id !== idYangAkanDihapus);
+
+    // Update UI
+    tampilkanTransaksi();
+    hitungSaldo();
+    document.getElementById("modalHapus").close();
+    showAlert('Riwayat berhasil dihapus', 'alert-success');
+
+    idYangAkanDihapus = null;
+  }
+}); 
+
+// Edit Transaksi 
+window.editTransaksi = function(id) {
+  const item = dataTransaksi.find(t => t.id === id);
+  if (!item) {
+    showAlert('Data Transaksi tidak ditemukan', 'alert-error');
+    return;
+  }
+
+  inputNominal.value = item.nominal;
+  tanggalTransaksi.value = item.tanggal;
+  document.getElementById("catatanTransaksi").value = item.catatan;
+
+  const radioElement = document.getElementById(item.tipe);
+  if (radioElement) {
+    radioElement.checked=true;
+  }
+
+  // Hapus data lama
+  dataTransaksi = dataTransaksi.filter(t => t.id !== id);
+
+  // Scroll otomatis ke atas agar user sadar form sudah terisi
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  showAlert("Silakan ubah data di atas", "alert-info");
 }
